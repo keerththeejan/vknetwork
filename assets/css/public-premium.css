@@ -1,0 +1,1018 @@
+/**
+ * VK Network — public site premium UI (Stripe / Notion / Linear inspired)
+ * Scoped: body.vk-public-site
+ */
+
+/**
+ * Public theme tokens — use data-theme + data-bs-theme (kept in sync in JS).
+ * Semantic names map to legacy --vk-pub-* for existing rules.
+ */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #1a1a1a;
+    --text-muted-color: #64748b;
+    --card-bg: #ffffff;
+    --border-color: #e5e7eb;
+    --primary-color: #2563eb;
+    --vk-on-primary: #ffffff;
+    /* Always light text on blue hero / glass-on-gradient blocks */
+    --vk-hero-fg: #ffffff;
+    --vk-hero-fg-soft: rgba(255, 255, 255, 0.72);
+    --vk-hero-fg-muted: rgba(255, 255, 255, 0.82);
+    /* Legacy bridge */
+    --vk-pub-primary: #1e3a8a;
+    --vk-pub-primary-mid: var(--primary-color);
+    --vk-pub-accent: #6366f1;
+    --vk-pub-bg: var(--bg-color);
+    --vk-pub-surface: var(--card-bg);
+    --vk-pub-text: var(--text-color);
+    --vk-pub-text-muted: var(--text-muted-color);
+    --vk-pub-border: var(--border-color);
+    --vk-navbar-bg: rgba(255, 255, 255, 0.72);
+    --vk-navbar-bg-solid: rgba(255, 255, 255, 0.94);
+    --vk-navbar-border: rgba(15, 23, 42, 0.08);
+    --vk-shadow-card: 0 2px 8px rgba(30, 58, 138, 0.06), 0 8px 32px rgba(15, 23, 42, 0.06);
+    --vk-shadow-card-hover: 0 12px 40px rgba(30, 58, 138, 0.12), 0 4px 12px rgba(15, 23, 42, 0.08);
+    --vk-transition: 0.3s ease;
+    /* Fixed blues for hero gradients (same in light & dark so the banner stays on-brand) */
+    --vk-marketing-blue-deep: #1e3a8a;
+    --vk-marketing-blue-mid: #2563eb;
+    --vk-marketing-blue-light: #3b82f6;
+}
+
+html[data-theme="dark"],
+html[data-bs-theme="dark"] {
+    --bg-color: #0f172a;
+    --text-color: #e5e7eb;
+    --text-muted-color: #94a3b8;
+    --card-bg: #1e293b;
+    --border-color: #334155;
+    --primary-color: #3b82f6;
+    --vk-pub-primary: #60a5fa;
+    --vk-pub-primary-mid: #3b82f6;
+    --vk-pub-accent: #a78bfa;
+    --vk-pub-bg: var(--bg-color);
+    --vk-pub-surface: var(--card-bg);
+    --vk-pub-text: var(--text-color);
+    --vk-pub-text-muted: var(--text-muted-color);
+    --vk-pub-border: var(--border-color);
+    --vk-navbar-bg: rgba(15, 23, 42, 0.72);
+    --vk-navbar-bg-solid: rgba(15, 23, 42, 0.96);
+    --vk-navbar-border: rgba(148, 163, 184, 0.14);
+    --vk-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.25), 0 8px 32px rgba(0, 0, 0, 0.2);
+    --vk-shadow-card-hover: 0 16px 48px rgba(0, 0, 0, 0.35), 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .vk-float-soft,
+    .vk-animate-hero > *,
+    .vk-animate-hero.vk-animate-hero--aside > * {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .vk-pub-nav .btn-staff,
+    .vk-btn-hero-primary,
+    .vk-btn-hero-secondary,
+    .vk-public-site .btn-primary,
+    .vk-public-site .btn-outline-secondary,
+    .vk-theme-toggle {
+        transition: none !important;
+    }
+
+    .vk-pub-service-card:hover,
+    .vk-public-site .vk-service-card:hover {
+        transform: none !important;
+    }
+}
+
+body.vk-public-site {
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    /* Bootstrap 5 — map semantic tokens so cards, modals, forms inherit correctly */
+    --bs-body-bg: var(--bg-color);
+    --bs-body-color: var(--text-color);
+    --bs-secondary-color: var(--text-muted-color);
+    --bs-tertiary-color: var(--text-muted-color);
+    --bs-border-color: var(--border-color);
+    --bs-emphasis-color: var(--text-color);
+    --bs-primary: var(--primary-color);
+    --bs-link-color: var(--primary-color);
+    --bs-link-hover-color: var(--vk-pub-primary);
+    --bs-primary-rgb: 37, 99, 235;
+}
+
+html:is([data-theme="dark"], [data-bs-theme="dark"]) body.vk-public-site {
+    --bs-primary-rgb: 59, 130, 246;
+}
+
+/* Modals, list groups, close button — theme-aware */
+.vk-public-site .modal-content {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.vk-public-site .modal-header {
+    border-bottom-color: var(--border-color);
+}
+
+.vk-public-site .modal-header .h6,
+.vk-public-site .modal-header h1,
+.vk-public-site .modal-header h2,
+.vk-public-site .modal-header h3 {
+    color: var(--text-color);
+}
+
+.vk-public-site .btn-close {
+    filter: none;
+}
+
+html:is([data-theme="dark"], [data-bs-theme="dark"]) .vk-public-site .btn-close {
+    filter: invert(1);
+}
+
+.vk-public-site .list-group-item {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.vk-public-site .form-control {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.vk-public-site .form-control::placeholder {
+    color: var(--text-muted-color);
+}
+
+.vk-public-site .form-control:focus {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+.vk-public-site .form-label {
+    color: var(--text-color);
+}
+
+.vk-public-site .text-body-secondary {
+    color: var(--text-muted-color) !important;
+}
+
+html:is([data-theme="dark"], [data-bs-theme="dark"]) .vk-public-site .badge.text-bg-light {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color);
+}
+
+/* Optional alias for gallery tiles (see .vk-svc-gallery-item) */
+.gallery-card {
+    background: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.gallery-card p {
+    color: var(--text-muted-color);
+}
+
+.vk-gallery-preview-img {
+    background: var(--card-bg) !important;
+}
+
+/* AOS: avoid layout jump */
+[data-aos] {
+    pointer-events: auto;
+}
+
+/* Lucide (stroke icons) */
+.vk-public-site .vk-theme-toggle svg {
+    width: 1.125rem;
+    height: 1.125rem;
+    stroke: currentColor;
+}
+
+.vk-public-site .vk-lucide-nav svg {
+    width: 1.125rem;
+    height: 1.125rem;
+    stroke: currentColor;
+}
+
+.vk-public-site .vk-pub-icon-wrap svg {
+    width: 1.75rem;
+    height: 1.75rem;
+    stroke: currentColor;
+}
+
+.vk-public-site .vk-glass-list svg {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    stroke: #a5f3fc;
+}
+
+.vk-public-site .vk-hero-btn-ic svg {
+    width: 1.15rem;
+    height: 1.15rem;
+    stroke: currentColor;
+}
+
+.vk-public-site .vk-contact-ic svg {
+    width: 1.125rem;
+    height: 1.125rem;
+    stroke: var(--vk-pub-primary-mid);
+    vertical-align: -0.2em;
+}
+
+.vk-public-site .vk-lucide-footer svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    stroke: currentColor;
+    flex-shrink: 0;
+}
+
+.vk-public-site .vk-lucide-inline-sm svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    stroke: currentColor;
+    vertical-align: -0.125em;
+}
+
+.vk-public-site .vk-portfolio-placeholder svg {
+    width: 2.75rem;
+    height: 2.75rem;
+    stroke: var(--vk-pub-text-muted);
+    opacity: 0.65;
+}
+
+.vk-public-site h1,
+.vk-public-site h2,
+.vk-public-site .vk-display-font {
+    font-family: "Poppins", "Inter", system-ui, sans-serif;
+}
+
+/* ——— Navbar (glass → solid on scroll) ——— */
+.vk-navbar-premium {
+    background: var(--vk-navbar-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent !important;
+    box-shadow: none;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    transition:
+        background var(--vk-transition),
+        border-color var(--vk-transition),
+        box-shadow var(--vk-transition);
+}
+
+.vk-navbar-premium.is-scrolled {
+    background: var(--vk-navbar-bg-solid) !important;
+    border-bottom-color: var(--vk-navbar-border) !important;
+    box-shadow: 0 1px 0 var(--vk-navbar-border), 0 8px 32px rgba(15, 23, 42, 0.06);
+}
+
+html:is([data-theme="dark"], [data-bs-theme="dark"]) .vk-navbar-premium.is-scrolled {
+    box-shadow: 0 1px 0 var(--vk-navbar-border), 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.vk-public-logo-circle {
+    width: 42px;
+    height: 42px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    flex-shrink: 0;
+    background: linear-gradient(145deg, var(--vk-pub-primary-mid) 0%, var(--vk-pub-primary) 100%);
+    box-shadow: 0 2px 12px rgba(30, 58, 138, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+}
+
+@media (min-width: 992px) {
+    .vk-public-logo-circle {
+        width: 46px;
+        height: 46px;
+        font-size: 0.875rem;
+    }
+}
+
+.vk-public-brand-title {
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--vk-pub-text);
+    letter-spacing: -0.03em;
+    font-size: 1.125rem;
+    transition: color var(--vk-transition);
+}
+
+@media (min-width: 992px) {
+    .vk-public-brand-title {
+        font-size: 1.375rem;
+    }
+}
+
+.vk-public-brand-sub {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--vk-pub-text-muted);
+    margin-top: 0.125rem;
+    letter-spacing: 0.02em;
+}
+
+@media (min-width: 992px) {
+    .vk-public-brand-sub {
+        font-size: 0.8125rem;
+    }
+}
+
+/* Nav links: underline animation */
+.vk-pub-nav .nav-link.vk-pub-nav-link {
+    position: relative;
+    color: var(--vk-pub-text-muted);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    padding: 0.5rem 0.875rem !important;
+    border-radius: 0.5rem;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.vk-pub-nav .nav-link.vk-pub-nav-link::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0.35rem;
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--vk-pub-primary), var(--vk-pub-accent));
+    transform: translateX(-50%);
+    transition: width 0.25s ease;
+}
+
+.vk-pub-nav .nav-link.vk-pub-nav-link:hover {
+    color: var(--vk-pub-text);
+    background-color: rgba(99, 102, 241, 0.06);
+}
+
+.vk-pub-nav .nav-link.vk-pub-nav-link:hover::after {
+    width: 60%;
+}
+
+.vk-pub-nav .nav-link.vk-pub-nav-link.active {
+    color: var(--vk-pub-primary);
+    font-weight: 600;
+    background-color: rgba(37, 99, 235, 0.1);
+}
+
+html:is([data-theme="dark"], [data-bs-theme="dark"]) .vk-pub-nav .nav-link.vk-pub-nav-link.active {
+    color: var(--vk-pub-primary-mid);
+    background-color: rgba(59, 130, 246, 0.12);
+}
+
+.vk-pub-nav .nav-link.vk-pub-nav-link.active::after {
+    width: 70%;
+}
+
+/* Staff CTA */
+.vk-pub-nav .btn-staff {
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(135deg, var(--vk-pub-primary), var(--primary-color));
+    color: var(--vk-on-primary);
+    box-shadow: 0 2px 8px rgba(30, 58, 138, 0.35);
+    transition: transform var(--vk-transition), box-shadow var(--vk-transition);
+}
+
+.vk-pub-nav .btn-staff:hover {
+    color: var(--vk-on-primary);
+    transform: scale(1.05) translateY(-1px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
+}
+
+.vk-pub-nav .btn-staff:active {
+    transform: scale(1.02);
+}
+
+html:is([data-theme="dark"], [data-bs-theme="dark"]) .vk-pub-nav .btn-staff {
+    background: linear-gradient(135deg, var(--primary-color), var(--vk-pub-accent));
+    box-shadow: 0 2px 12px rgba(59, 130, 246, 0.35);
+}
+
+/* Theme toggle */
+.vk-theme-toggle {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border: 1px solid var(--vk-pub-border);
+    background: var(--vk-pub-surface);
+    color: var(--vk-pub-text-muted);
+    transition: color var(--vk-transition), background var(--vk-transition), border-color var(--vk-transition),
+        transform 0.2s ease;
+}
+
+.vk-theme-toggle:hover {
+    color: var(--vk-pub-text);
+    background: rgba(99, 102, 241, 0.08);
+    transform: scale(1.05);
+}
+
+.vk-navbar-premium .navbar-toggler {
+    border: 1px solid var(--vk-pub-border);
+    border-radius: 0.5rem;
+    padding: 0.45rem 0.55rem;
+}
+
+html:is([data-theme="dark"], [data-bs-theme="dark"]) .vk-navbar-premium .navbar-toggler-icon {
+    filter: invert(1) brightness(1.15);
+}
+
+/* ——— Hero ——— (always blue gradient; text stays light for contrast) */
+.vk-hero-premium {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+        135deg,
+        var(--vk-marketing-blue-deep) 0%,
+        var(--vk-marketing-blue-mid) 55%,
+        var(--vk-marketing-blue-light) 100%
+    );
+    color: var(--vk-hero-fg);
+}
+
+.vk-hero-premium::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 20% 20%, rgba(99, 102, 241, 0.35), transparent 55%),
+        radial-gradient(ellipse 60% 50% at 85% 80%, rgba(56, 189, 248, 0.2), transparent 50%);
+    pointer-events: none;
+}
+
+.vk-hero-inner {
+    position: relative;
+    z-index: 1;
+    padding-top: 2.5rem;
+    padding-bottom: 3.5rem;
+}
+
+@media (min-width: 992px) {
+    .vk-hero-inner {
+        padding-top: 3.5rem;
+        padding-bottom: 4.5rem;
+    }
+}
+
+.vk-hero-eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--vk-hero-fg-soft);
+    margin-bottom: 0.75rem;
+}
+
+.vk-hero-title {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.85rem, 4vw + 1rem, 3.25rem);
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+    color: var(--vk-hero-fg);
+}
+
+.vk-hero-lead {
+    font-size: clamp(1rem, 1.2vw + 0.9rem, 1.2rem);
+    line-height: 1.6;
+    color: var(--vk-hero-fg-muted);
+    max-width: 36rem;
+    margin-bottom: 1.75rem;
+}
+
+.vk-btn-hero-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.65rem;
+    border: none;
+    background: linear-gradient(180deg, #fff 0%, #f1f5f9 100%);
+    color: #1e3a8a;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+    transition: transform var(--vk-transition), box-shadow var(--vk-transition);
+}
+
+.vk-btn-hero-primary:hover {
+    color: #1e3a8a;
+    transform: scale(1.05);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+}
+
+.vk-btn-hero-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    color: var(--vk-hero-fg);
+    transition: transform var(--vk-transition), background var(--vk-transition), border-color var(--vk-transition);
+}
+
+.vk-btn-hero-secondary:hover {
+    color: var(--vk-hero-fg);
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.65);
+    transform: scale(1.05);
+}
+
+@media (max-width: 575.98px) {
+    .vk-hero-actions .vk-btn-hero-primary,
+    .vk-hero-actions .vk-btn-hero-secondary {
+        width: 100%;
+    }
+}
+
+/* Glass card */
+.vk-glass-card {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.vk-glass-card h2,
+.vk-glass-card .vk-glass-title {
+    color: var(--vk-hero-fg);
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+}
+
+.vk-glass-card .vk-glass-list {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .vk-float-soft {
+        animation: vkFloatSoft 7s ease-in-out infinite;
+    }
+
+    .vk-animate-hero > * {
+        opacity: 0;
+        animation: vkFadeUp 0.75s ease forwards;
+    }
+
+    .vk-animate-hero > *:nth-child(1) {
+        animation-delay: 0.05s;
+    }
+    .vk-animate-hero > *:nth-child(2) {
+        animation-delay: 0.12s;
+    }
+    .vk-animate-hero > *:nth-child(3) {
+        animation-delay: 0.19s;
+    }
+    .vk-animate-hero > *:nth-child(4) {
+        animation-delay: 0.26s;
+    }
+    .vk-animate-hero.vk-animate-hero--aside > * {
+        animation-delay: 0.35s;
+    }
+}
+
+@keyframes vkFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes vkFloatSoft {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* ——— Sections ——— */
+.vk-pub-section {
+    background: var(--vk-pub-bg);
+}
+
+.vk-pub-section-alt {
+    background: var(--vk-pub-bg);
+}
+
+.vk-pub-section-contact {
+    background: var(--vk-pub-surface);
+    border-top: 1px solid var(--vk-pub-border);
+}
+
+.vk-pub-page {
+    background: var(--vk-pub-bg);
+    min-height: 50vh;
+}
+
+.vk-section-title {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.5rem, 2vw + 1rem, 2rem);
+    color: var(--vk-pub-text);
+    letter-spacing: -0.02em;
+}
+
+.vk-section-lead {
+    color: var(--vk-pub-text-muted);
+    max-width: 34rem;
+}
+
+/* Service cards (Linear-style) */
+.vk-pub-service-card {
+    background: var(--vk-pub-surface);
+    border: 1px solid var(--vk-pub-border);
+    border-radius: 16px;
+    box-shadow: var(--vk-shadow-card);
+    transition: transform var(--vk-transition), box-shadow var(--vk-transition), border-color var(--vk-transition);
+    height: 100%;
+    overflow: hidden;
+}
+
+.vk-pub-service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--vk-shadow-card-hover);
+    border-color: rgba(99, 102, 241, 0.2);
+}
+
+.vk-pub-service-card .vk-pub-icon-wrap {
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.12), rgba(99, 102, 241, 0.15));
+    color: var(--vk-pub-primary);
+}
+
+html:is([data-theme="dark"], [data-bs-theme="dark"]) .vk-pub-service-card .vk-pub-icon-wrap {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(99, 102, 241, 0.22));
+    color: var(--vk-pub-primary-mid);
+}
+
+.vk-pub-service-card h3 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--vk-pub-text);
+}
+
+.vk-pub-service-card .stretched-link {
+    font-weight: 600;
+    border-radius: 0.5rem;
+    transition: transform 0.2s ease;
+}
+
+.vk-pub-service-card:hover .stretched-link {
+    transform: translateX(2px);
+}
+
+/* Legacy class used on portfolio */
+.vk-public-site .vk-service-card {
+    transition: transform var(--vk-transition), box-shadow var(--vk-transition);
+    border-radius: 16px;
+    border: 1px solid var(--vk-pub-border);
+    background: var(--vk-pub-surface);
+}
+
+.vk-public-site .vk-service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--vk-shadow-card-hover);
+}
+
+/* Buttons on inner pages */
+.vk-public-site .btn-primary {
+    background: linear-gradient(135deg, var(--vk-pub-primary), var(--primary-color));
+    border: none;
+    font-weight: 600;
+    color: var(--vk-on-primary);
+    transition: transform var(--vk-transition), box-shadow var(--vk-transition);
+}
+
+.vk-public-site .btn-primary:hover {
+    background: linear-gradient(135deg, var(--primary-color), var(--vk-pub-primary-mid));
+    color: var(--vk-on-primary);
+    transform: scale(1.03);
+}
+
+.vk-public-site .btn-outline-secondary {
+    border-color: var(--vk-pub-border);
+    color: var(--vk-pub-text);
+    font-weight: 600;
+    transition: transform var(--vk-transition), background var(--vk-transition);
+}
+
+.vk-public-site .btn-outline-secondary:hover {
+    background: var(--vk-pub-bg);
+    border-color: var(--vk-pub-text-muted);
+    color: var(--vk-pub-text);
+    transform: scale(1.03);
+}
+
+.vk-public-site .btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.vk-public-site .btn-outline-primary:hover {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--vk-on-primary);
+}
+
+html:is([data-theme="dark"], [data-bs-theme="dark"]) .vk-public-site .card {
+    background: var(--vk-pub-surface);
+    border-color: var(--vk-pub-border);
+    color: var(--vk-pub-text);
+}
+
+html:is([data-theme="dark"], [data-bs-theme="dark"]) .vk-public-site .text-muted {
+    color: var(--vk-pub-text-muted) !important;
+}
+
+/* Footer */
+.vk-public-footer {
+    background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
+    color: rgba(248, 250, 252, 0.72);
+    border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.vk-public-footer .vk-footer-brand {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    color: #f8fafc;
+    font-size: 1.05rem;
+}
+
+.vk-public-footer a.link-footer {
+    color: rgba(248, 250, 252, 0.85);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.vk-public-footer a.link-footer:hover {
+    color: #93c5fd;
+}
+
+/* ——— Service detail page ——— */
+.vk-svc-breadcrumb {
+    font-size: 0.875rem;
+    color: var(--vk-pub-text-muted);
+}
+
+.vk-svc-breadcrumb a {
+    color: var(--vk-pub-text-muted);
+    text-decoration: none;
+}
+
+.vk-svc-breadcrumb a:hover {
+    color: var(--vk-pub-primary-mid);
+}
+
+.vk-svc-hero {
+    position: relative;
+    min-height: 46vh;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 3rem;
+    padding-top: 2.5rem;
+    background: linear-gradient(135deg, var(--vk-marketing-blue-deep) 0%, var(--vk-marketing-blue-mid) 100%);
+    background-size: cover;
+    background-position: center;
+    color: var(--vk-hero-fg);
+    overflow: hidden;
+}
+
+.vk-svc-hero.has-cover {
+    background-color: var(--vk-marketing-blue-deep);
+}
+
+.vk-svc-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.45) 0%, rgba(15, 23, 42, 0.75) 100%);
+    pointer-events: none;
+}
+
+.vk-svc-hero-inner {
+    position: relative;
+    z-index: 1;
+}
+
+.vk-svc-hero-title {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.85rem, 4vw + 1rem, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.25);
+}
+
+.vk-svc-hero-lead {
+    font-size: clamp(1rem, 1vw + 0.9rem, 1.2rem);
+    color: var(--vk-hero-fg-muted);
+    max-width: 40rem;
+    line-height: 1.55;
+}
+
+.vk-svc-hero-meta {
+    color: rgba(255, 255, 255, 0.82);
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.32);
+}
+
+.vk-svc-hero-note {
+    color: rgba(255, 255, 255, 0.92);
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
+}
+
+.vk-svc-gallery-item {
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    color: var(--text-color);
+    box-shadow: var(--vk-shadow-card);
+    transition: transform var(--vk-transition), box-shadow var(--vk-transition);
+}
+
+.vk-svc-gallery-item figcaption {
+    color: var(--text-muted-color);
+}
+
+.vk-svc-gallery-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--vk-shadow-card-hover);
+}
+
+.vk-svc-gallery-item .ratio {
+    background: var(--bg-color);
+}
+
+.vk-svc-gallery-btn {
+    display: block;
+    cursor: zoom-in;
+}
+
+.vk-svc-gallery-item img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.35s ease;
+}
+
+.vk-svc-gallery-item:hover img {
+    transform: scale(1.07);
+}
+
+.vk-svc-feature-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.12), rgba(99, 102, 241, 0.15));
+    color: var(--vk-pub-primary);
+    flex-shrink: 0;
+}
+
+html:is([data-theme="dark"], [data-bs-theme="dark"]) .vk-svc-feature-icon {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(99, 102, 241, 0.22));
+    color: var(--vk-pub-primary-mid);
+}
+
+.vk-svc-feature-icon svg {
+    width: 1.35rem;
+    height: 1.35rem;
+    stroke: currentColor;
+}
+
+.vk-svc-related-card {
+    border-radius: 16px;
+    border: 1px solid var(--vk-pub-border);
+    background: var(--vk-pub-surface);
+    box-shadow: var(--vk-shadow-card);
+    transition: transform var(--vk-transition), box-shadow var(--vk-transition);
+    height: 100%;
+}
+
+.vk-svc-related-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--vk-shadow-card-hover);
+}
+
+.vk-svc-related-card .vk-pub-icon-wrap svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.vk-svc-cta-bar {
+    border-radius: 16px;
+    border: 1px solid var(--vk-pub-border);
+    background: var(--vk-pub-surface);
+    box-shadow: var(--vk-shadow-card);
+}
+
+.vk-svc-price-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.48);
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+    font-weight: 600;
+    font-size: 0.9rem;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+html:is([data-theme="dark"], [data-bs-theme="dark"]) .vk-svc-price-pill {
+    background: rgba(59, 130, 246, 0.18);
+    color: #dbeafe;
+}
+
+/* Service hero is always a dark gradient/overlay; force high contrast */
+.vk-svc-hero .vk-svc-price-pill {
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.52);
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 575.98px) {
+    .vk-svc-cta-bar .btn-lg {
+        width: 100%;
+    }
+}
+
+/* Floating WhatsApp (public site) */
+.vk-float-wa {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: #25d366;
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    text-decoration: none;
+}
+
+.vk-float-wa:hover {
+    color: #fff;
+    transform: scale(1.06);
+    box-shadow: 0 6px 28px rgba(37, 211, 102, 0.55);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .vk-float-wa {
+        transition: none;
+    }
+}

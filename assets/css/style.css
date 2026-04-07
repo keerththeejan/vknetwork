@@ -1,0 +1,218 @@
+/* VK IT Network — Billing UI */
+:root {
+    --vk-blue-deep: #0a2a5c;
+    --vk-blue-mid: #134a9e;
+    --vk-blue-ring: #3b82c4;
+    --vk-red-brand: #dc2626;
+    --vk-grid: rgba(255, 255, 255, 0.06);
+}
+
+[data-bs-theme="dark"] {
+    --vk-blue-deep: #071a3a;
+    --vk-blue-mid: #0f3566;
+}
+
+body.vk-app {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.vk-navbar {
+    background: linear-gradient(90deg, var(--vk-blue-deep), var(--vk-blue-mid));
+}
+
+.vk-sidebar {
+    background: linear-gradient(180deg, var(--vk-blue-deep) 0%, #06152e 100%);
+    min-height: 100vh;
+    width: 260px;
+    flex-shrink: 0;
+}
+
+@media (min-width: 992px) {
+    .vk-sidebar {
+        position: sticky;
+        top: 0;
+        transform: none !important;
+        visibility: visible !important;
+        display: flex !important;
+    }
+    #sidebarOffcanvas {
+        transform: none !important;
+        visibility: visible !important;
+    }
+}
+
+.vk-sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.85);
+    border-left: 3px solid transparent;
+}
+.vk-sidebar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+}
+.vk-sidebar .nav-link.active {
+    background: rgba(255, 255, 255, 0.1);
+    border-left-color: var(--vk-red-brand);
+    color: #fff;
+    font-weight: 600;
+}
+
+.vk-main {
+    background: repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 24px,
+            rgba(10, 42, 92, 0.03) 24px,
+            rgba(10, 42, 92, 0.03) 25px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 24px,
+            rgba(10, 42, 92, 0.03) 24px,
+            rgba(10, 42, 92, 0.03) 25px
+        );
+    background-color: var(--bs-body-bg);
+}
+
+.vk-logo-sm {
+    width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+    background: radial-gradient(circle at 30% 30%, var(--vk-blue-mid), var(--vk-blue-deep));
+    box-shadow: 0 0 0 3px var(--vk-blue-ring);
+}
+
+.vk-brand-red {
+    color: var(--vk-red-brand) !important;
+}
+
+.vk-card {
+    border: none;
+    box-shadow: 0 0.125rem 0.5rem rgba(10, 42, 92, 0.08);
+}
+
+[data-bs-theme="dark"] .vk-card {
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.35);
+}
+
+/*
+ * Dark mode: outline-secondary / outline-dark use vars that match body text on dark cards — low contrast.
+ * !important beats Bootstrap’s --bs-btn-* overrides on .card / .vk-card.
+ */
+[data-bs-theme="dark"] .btn-outline-secondary {
+    --bs-btn-color: #e2e8f0;
+    --bs-btn-border-color: rgba(148, 163, 184, 0.55);
+    --bs-btn-hover-color: #f8fafc;
+    --bs-btn-hover-bg: rgba(148, 163, 184, 0.16);
+    --bs-btn-hover-border-color: rgba(203, 213, 225, 0.75);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: rgba(148, 163, 184, 0.22);
+    --bs-btn-active-border-color: rgba(203, 213, 225, 0.8);
+    color: #e2e8f0 !important;
+    border-color: rgba(148, 163, 184, 0.55) !important;
+}
+
+[data-bs-theme="dark"] .btn-outline-secondary:hover,
+[data-bs-theme="dark"] .btn-outline-secondary:focus-visible {
+    color: #f8fafc !important;
+}
+
+[data-bs-theme="dark"] .btn-outline-dark {
+    --bs-btn-color: #e2e8f0;
+    --bs-btn-border-color: rgba(148, 163, 184, 0.55);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: rgba(255, 255, 255, 0.08);
+    --bs-btn-hover-border-color: rgba(226, 232, 240, 0.65);
+    --bs-btn-active-color: #fff;
+    color: #e2e8f0 !important;
+    border-color: rgba(148, 163, 184, 0.55) !important;
+}
+
+[data-bs-theme="dark"] .btn-outline-dark:hover,
+[data-bs-theme="dark"] .btn-outline-dark:focus-visible {
+    color: #fff !important;
+}
+
+[data-bs-theme="dark"] .btn-outline-secondary:active,
+[data-bs-theme="dark"] .btn-outline-dark:active {
+    color: #fff !important;
+}
+
+.vk-stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+}
+
+.vk-kpi-card {
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.vk-kpi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.35rem 0.85rem rgba(10, 42, 92, 0.14);
+}
+
+[data-bs-theme="dark"] .vk-kpi-card:hover {
+    box-shadow: 0 0.35rem 0.85rem rgba(0, 0, 0, 0.45);
+}
+
+.vk-settings-card {
+    transition: box-shadow 0.2s ease;
+}
+
+.table-responsive-stack {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.vk-loader {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 26, 58, 0.45);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Login */
+.vk-login-wrap {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--vk-blue-deep), var(--vk-blue-mid) 50%, #0c1f42);
+    background-image: linear-gradient(var(--vk-grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--vk-grid) 1px, transparent 1px);
+    background-size: 28px 28px;
+}
+
+/* Print invoice */
+@media print {
+    .no-print,
+    .vk-sidebar,
+    .vk-navbar,
+    footer,
+    .btn,
+    .dropdown {
+        display: none !important;
+    }
+    .vk-main,
+    main {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    body {
+        background: #fff !important;
+    }
+}
+
+.sortable th[data-sort] {
+    cursor: pointer;
+    user-select: none;
+}
+.sortable th[data-sort]:hover {
+    background: rgba(10, 42, 92, 0.06);
+}

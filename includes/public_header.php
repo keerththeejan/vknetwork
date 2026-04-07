@@ -1,0 +1,76 @@
+<?php
+declare(strict_types=1);
+$pageTitle = $pageTitle ?? 'Home';
+$navActive = $navActive ?? '';
+$extraHead = $extraHead ?? '';
+$seoBrand = vk_app_setting('site_name') ?: 'VK Network';
+$seoTitlePrefix = vk_app_setting('seo_site_title');
+$titleBase = ($seoTitlePrefix !== null && $seoTitlePrefix !== '') ? $seoTitlePrefix : $seoBrand;
+$htmlTitle = $seoDocumentTitle ?? ($titleBase . ' | ' . $pageTitle);
+$GLOBALS['seoFullTitle'] = $htmlTitle;
+if (!headers_sent() && ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'GET') {
+    header('Cache-Control: public, max-age=600');
+}
+?>
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?= e($htmlTitle) ?></title>
+    <?php vk_public_seo_head(); ?>
+    <?= vk_geo_meta_tags() ?>
+    <?= vk_plausible_script() ?>
+    <script>
+    (function () {
+        try {
+            var t = localStorage.getItem('vk-public-theme');
+            if (t === 'dark' || t === 'light') {
+                document.documentElement.setAttribute('data-bs-theme', t);
+                document.documentElement.setAttribute('data-theme', t);
+            }
+        } catch (e) {}
+    })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="<?= e(BASE_URL) ?>/assets/css/style.css" rel="stylesheet">
+    <link href="<?= e(BASE_URL) ?>/assets/css/public-premium.css" rel="stylesheet">
+    <?= $extraHead ?>
+</head>
+<body class="vk-public-site d-flex flex-column min-vh-100">
+<nav class="navbar navbar-expand-lg sticky-top vk-navbar-premium">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between">
+        <a class="navbar-brand d-flex align-items-center gap-3 py-2 mb-0 text-decoration-none" href="<?= e(BASE_URL) ?>/index.php">
+            <span class="vk-public-logo-circle rounded-circle text-white d-inline-flex align-items-center justify-content-center" aria-hidden="true">VK</span>
+            <span class="d-flex flex-column align-items-start text-start lh-sm">
+                <span class="vk-public-brand-title"><?= e($seoBrand) ?></span>
+                <span class="vk-public-brand-sub">Multi-Service Solutions</span>
+            </span>
+        </a>
+        <div class="d-flex align-items-center gap-2 order-lg-last flex-shrink-0">
+            <button type="button" class="btn vk-theme-toggle" data-vk-theme-toggle aria-label="Toggle color theme" aria-pressed="false" title="Light / dark mode">
+                <span class="vk-theme-icon-sun d-none align-items-center justify-content-center" aria-hidden="true" style="width:1.35rem;height:1.35rem"><i data-lucide="sun"></i></span>
+                <span class="vk-theme-icon-moon d-inline-flex align-items-center justify-content-center" aria-hidden="true" style="width:1.35rem;height:1.35rem"><i data-lucide="moon"></i></span>
+            </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#pubNav" aria-controls="pubNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse flex-grow-1 justify-content-lg-end" id="pubNav">
+            <ul class="navbar-nav vk-pub-nav ms-lg-auto mb-2 mb-lg-0 align-items-lg-center gap-lg-2 pt-3 pt-lg-0 border-top border-lg-top-0 mt-2 mt-lg-0">
+                <li class="nav-item"><a class="nav-link vk-pub-nav-link <?= $navActive === 'home' ? 'active' : '' ?>" href="<?= e(BASE_URL) ?>/index.php"<?= $navActive === 'home' ? ' aria-current="page"' : '' ?>>Home</a></li>
+                <li class="nav-item"><a class="nav-link vk-pub-nav-link <?= $navActive === 'book' ? 'active' : '' ?>" href="<?= e(BASE_URL) ?>/book.php"<?= $navActive === 'book' ? ' aria-current="page"' : '' ?>>Book Service</a></li>
+                <li class="nav-item"><a class="nav-link vk-pub-nav-link <?= $navActive === 'track' ? 'active' : '' ?>" href="<?= e(BASE_URL) ?>/track.php"<?= $navActive === 'track' ? ' aria-current="page"' : '' ?>>Track Status</a></li>
+                <li class="nav-item"><a class="nav-link vk-pub-nav-link <?= $navActive === 'portfolio' ? 'active' : '' ?>" href="<?= e(BASE_URL) ?>/portfolio.php"<?= $navActive === 'portfolio' ? ' aria-current="page"' : '' ?>>Our Work</a></li>
+                <li class="nav-item ms-lg-1 mt-2 mt-lg-0 w-100 w-lg-auto">
+                    <a class="btn btn-staff d-inline-flex align-items-center justify-content-center w-100 w-lg-auto" href="<?= e(BASE_URL) ?>/login.php"><span class="vk-lucide-nav me-2" aria-hidden="true"><i data-lucide="shield-check"></i></span>Staff Login</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<main class="flex-grow-1">

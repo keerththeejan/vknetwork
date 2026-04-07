@@ -1,0 +1,25 @@
+# VK Network — optional pretty URLs + caching (Apache + mod_rewrite)
+# If you get 500 errors, ensure AllowOverride is enabled for this directory.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /VK/
+
+    # Dynamic robots.txt
+    RewriteRule ^robots\.txt$ robots.php [L]
+
+    # /VK/service/my-slug → service.php?slug=... (dynamic SEO/local pages)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^service/(.*)$ service.php?slug=$1 [L,QSA]
+
+    RewriteRule ^book/?$ book.php [L]
+    RewriteRule ^track/?$ track.php [L]
+    RewriteRule ^portfolio/?$ portfolio.php [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|png|jpg|jpeg|gif|webp|svg|ico|woff2)$">
+        Header set Cache-Control "public, max-age=2592000"
+    </FilesMatch>
+</IfModule>

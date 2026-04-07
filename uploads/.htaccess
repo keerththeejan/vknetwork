@@ -1,0 +1,13 @@
+<IfModule mod_authz_core.c>
+    <FilesMatch "\.(php|phtml|php3|php4|php5|phar)$">
+        Require all denied
+    </FilesMatch>
+</IfModule>
+
+# Apache 2.2 / mod_access_compat fallback
+<IfModule mod_access_compat.c>
+    <FilesMatch "\.(php|phtml|phar)$">
+        Order allow,deny
+        Deny from all
+    </FilesMatch>
+</IfModule>
